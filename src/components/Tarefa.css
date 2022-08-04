@@ -1,0 +1,22 @@
+.Tarefa-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 0.6fr 0.8fr;
+    width: 60vw;
+    border: 1px solid #FFFFFF;
+    border-radius: 5px;
+    background-color: #556655;
+}
+
+.Tarefa-header {
+    background-color: #445544;
+}
+
+.Tarefa-campo {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 50px;
+    margin: 4px;
+    border: 1px solid #FFFFFF;
+    border-radius: 5px;
+}
