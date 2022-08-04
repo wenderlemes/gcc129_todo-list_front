@@ -1,5 +1,6 @@
 import './App.css';
 import ListaTarefas from './components/ListaTarefas';
+import NovaTarefa from './components/NovaTarefa';
 
 const tarefasMocadas = [
   {
@@ -26,7 +27,10 @@ function App() {
   return (
     <div className="App">
       <div className="App-body">
-        <ListaTarefas tarefas={tarefasMocadas}/>
+        <div className="App-grid">
+          <NovaTarefa />
+          <ListaTarefas tarefas={tarefasMocadas}/>
+        </div>
       </div>
     </div>
   );

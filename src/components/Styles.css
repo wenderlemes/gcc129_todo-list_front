@@ -1,7 +1,7 @@
 .Tarefa-container {
     display: grid;
     grid-template-columns: 1fr 1fr 0.6fr 0.8fr;
-    width: 60vw;
+    width: 55vw;
     border: 1px solid #FFFFFF;
     border-radius: 5px;
     background-color: #556655;
@@ -19,4 +19,11 @@
     margin: 4px;
     border: 1px solid #FFFFFF;
     border-radius: 5px;
+}
+
+.NovaTarefa-container {
+    width: 90%;
+    border: 1px solid #FFFFFF;
+    border-radius: 5px;
+    background-color: #556655;
 }

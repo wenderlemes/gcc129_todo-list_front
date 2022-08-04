@@ -1,5 +1,5 @@
 import TarefaModel from '../repository/TarefaModel';
-import './Tarefa.css';
+import './Styles.css';
 import Tarefa from './Tarefa';
 
 interface ListaTarefasProps {
