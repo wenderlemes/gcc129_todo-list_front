@@ -14,7 +14,7 @@ const Tarefa = ({ tarefa, acaoDetalhes, acaoEditar, acaoCompletar, acaoExcluir }
     return (
         <div className="Tarefa-container">
             <div className="Tarefa-campo">{tarefa.identificacao}</div>
-            <div className="Tarefa-campo">{tarefa.prazo.toLocaleDateString()}</div>
+            <div className="Tarefa-campo">{"teste"}</div>
             <div className="Tarefa-campo">{tarefa.completa ? <CheckCircle /> : <X /> }</div>
             <div className="Tarefa-campo">
                 <Search cursor={'pointer'} onClick={acaoDetalhes}/>

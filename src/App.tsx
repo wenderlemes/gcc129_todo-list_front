@@ -6,19 +6,19 @@ const tarefasMocadas = [
   {
     identificacao: "T01",
     descricao: "Uma descrição",
-    prazo: new Date(),
+    prazo: "",
     completa: true,
   },
   {
     identificacao: "T02",
     descricao: "Uma descrição",
-    prazo: new Date(),
+    prazo: "",
     completa: false,
   },
   {
     identificacao: "T03",
     descricao: "Uma descrição",
-    prazo: new Date(),
+    prazo: "",
     completa: true,
   },
 ];
