@@ -18,11 +18,11 @@ const ListaTarefas = () => {
 
     return (
         <div>
-            <div className="Tarefa-container Tarefa-header">
-                <div className="Tarefa-campo">Identificação</div>
-                <div className="Tarefa-campo">Prazo</div>
-                <div className="Tarefa-campo">Completa</div>
-                <div className="Tarefa-campo">Opções</div>
+            <div className="Tarefa-container Header">
+                <div className="Campo">Identificação</div>
+                <div className="Campo">Prazo</div>
+                <div className="Campo">Completa</div>
+                <div className="Campo">Opções</div>
             </div>
             {lista.map((tarefa) => 
                 <Tarefa 

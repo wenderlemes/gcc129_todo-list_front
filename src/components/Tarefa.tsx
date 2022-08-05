@@ -1,7 +1,7 @@
 import TarefaModel from '../model/TarefaModel';
 import './Styles.css';
 import { Switch } from '@mui/material';
-import { CheckCircle, Edit, Search, ThumbsUp, Trash, X } from 'react-feather';
+import { Edit, Search, Trash } from 'react-feather';
 
 interface TarefaProps {
     tarefa: TarefaModel
@@ -14,10 +14,10 @@ interface TarefaProps {
 const Tarefa = ({ tarefa, acaoDetalhes, acaoEditar, acaoCompletar, acaoExcluir }: TarefaProps ) => {
     return (
         <div className="Tarefa-container">
-            <div className="Tarefa-campo">{tarefa.identificacao}</div>
-            <div className="Tarefa-campo">{tarefa.prazo.toLocaleString()}</div>
-            <div className="Tarefa-campo"><Switch checked={tarefa.completa} color={'default'} onChange={acaoCompletar} /></div>
-            <div className="Tarefa-campo">
+            <div className="Campo">{tarefa.identificacao}</div>
+            <div className="Campo">{tarefa.prazo.toLocaleString()}</div>
+            <div className="Campo"><Switch checked={tarefa.completa} color={'default'} onChange={acaoCompletar} /></div>
+            <div className="Campo">
                 <Search cursor={'pointer'} onClick={acaoDetalhes}/>
                 <Edit cursor={'pointer'} onClick={acaoEditar}/>
                 <Trash cursor={'pointer'} onClick={acaoExcluir}/>

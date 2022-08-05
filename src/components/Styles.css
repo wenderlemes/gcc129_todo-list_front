@@ -7,11 +7,11 @@
     background-color: #556655;
 }
 
-.Tarefa-header {
+.Header {
     background-color: #445544;
 }
 
-.Tarefa-campo {
+.Campo {
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -23,7 +23,7 @@
 
 .NovaTarefa-container {
     width: 90%;
-    height: 250px;
+    height: 50vh;
     border: 1px solid #FFFFFF;
     border-radius: 5px;
     background-color: #556655;
