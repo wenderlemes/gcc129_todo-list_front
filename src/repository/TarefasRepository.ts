@@ -20,6 +20,12 @@ const tarefasMocadas: TarefaDto[] = [
     prazo: "2022-07-29T01:30:00.000-05:00",
     completa: true,
   },
+  {
+    identificacao: "T04",
+    descricao: "Uma descrição",
+    prazo: "2022-07-29T01:30:00.000-05:00",
+    completa: true,
+  },
 ];
 
 export async function getTarefas () {

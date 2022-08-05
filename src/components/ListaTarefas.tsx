@@ -4,11 +4,7 @@ import './Styles.css';
 import Tarefa from './Tarefa';
 import { getTarefasService } from '../service/TarefaService';
 
-interface ListaTarefasProps {
-    tarefas: TarefaModel[]
-}
-
-const ListaTarefas = ({ tarefas }: ListaTarefasProps ) => {
+const ListaTarefas = () => {
     const [lista, setLista] = useState<TarefaModel[]>([]);
 
     useEffect(() => {
@@ -31,7 +27,7 @@ const ListaTarefas = ({ tarefas }: ListaTarefasProps ) => {
             {lista.map((tarefa) => 
                 <Tarefa 
                     tarefa={tarefa}
-                    acaoDetalhes={() => console.log(tarefas)} 
+                    acaoDetalhes={() => alert("Abrir detalhes")} 
                     acaoEditar={() => alert("Abrir edição")} 
                     acaoCompletar={() => alert("Completar tarefa")} 
                     acaoExcluir={() => alert("Excluir tarefa")}

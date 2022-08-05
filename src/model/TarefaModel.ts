@@ -1,7 +1,7 @@
 type TarefaModel = {
     identificacao: string;
     descricao: string;
-    prazo: string;
+    prazo: Date;
     completa: boolean;
 }
 
