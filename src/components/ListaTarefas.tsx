@@ -1,30 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import TarefaModel from '../repository/TarefaModel';
+import TarefaModel from '../model/TarefaModel';
 import './Styles.css';
 import Tarefa from './Tarefa';
-import TarefasRepository from '../repository/TarefasRepository';
+import { getTarefas } from '../repository/TarefasRepository';
 import axios from 'axios';
+import { getTarefasService } from '../service/TarefaService';
 
 interface ListaTarefasProps {
     tarefas: TarefaModel[]
 }
 
 const ListaTarefas = ({ tarefas }: ListaTarefasProps ) => {
-
-    const [lista, setLista] = useState<TarefaModel[]>([]);    
-
-    const requisicao = async () => {
-        axios.get(`http://192.168.103.14:3000/tarefas`, { 'headers': { 'Access-Control-Allow-Origin': '*' } })
-      .then((res: any) => {
-        setLista(res.data);
-      })    
-    }
-
+    const [lista, setLista] = useState<TarefaModel[]>([]);
 
     useEffect(() => {
-        requisicao();
-    }, []);
+        async function obterTarefas() {
+            const resultado = await getTarefasService();
+            setLista(resultado);
+        };
 
+        obterTarefas();
+    }, []);
 
     return (
         <div>

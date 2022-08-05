@@ -1,4 +1,4 @@
-import TarefaModel from '../repository/TarefaModel';
+import TarefaModel from '../model/TarefaModel';
 import './Styles.css';
 import { CheckCircle, Edit, Search, ThumbsUp, Trash, X } from 'react-feather';
 

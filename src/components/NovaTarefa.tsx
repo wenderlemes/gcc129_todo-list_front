@@ -1,4 +1,4 @@
-import TarefaModel from '../repository/TarefaModel';
+import TarefaModel from '../model/TarefaModel';
 import './Styles.css';
 
 const NovaTarefa = () => {
