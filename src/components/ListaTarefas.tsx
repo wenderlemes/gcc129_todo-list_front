@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import TarefaModel from '../model/TarefaModel';
 import './Styles.css';
 import Tarefa from './Tarefa';
-import { getTarefas } from '../repository/TarefasRepository';
-import axios from 'axios';
 import { getTarefasService } from '../service/TarefaService';
 
 interface ListaTarefasProps {
