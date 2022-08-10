@@ -15,9 +15,19 @@ interface IModalCadastroProps {
     setPrazo: (prazo: Date | null) => void;
     descricao: string;
     setDescricao: (descricao: string) => void;
+    modoVisualizacao?: boolean;
 }
 
-const ModalCadastro = ({ aberto, handleCancelar, handleConfirmar, titulo, prazo, setPrazo, descricao, setDescricao }: IModalCadastroProps ) => {
+const ModalCadastro = ({ 
+    aberto, 
+    handleCancelar, 
+    handleConfirmar, 
+    titulo, 
+    prazo, 
+    setPrazo, 
+    descricao, 
+    setDescricao, 
+    modoVisualizacao }: IModalCadastroProps ) => {
     return (
         <Dialog open={aberto} onClose={handleCancelar} fullWidth>
             <DialogTitle>{titulo}</DialogTitle>
@@ -35,6 +45,7 @@ const ModalCadastro = ({ aberto, handleCancelar, handleConfirmar, titulo, prazo,
                             fullWidth
                             margin="dense"
                             variant="outlined"
+                            disabled={modoVisualizacao}
                         />
                     </Grid>
                     <Grid item sm={12} mb={2}>
@@ -46,15 +57,16 @@ const ModalCadastro = ({ aberto, handleCancelar, handleConfirmar, titulo, prazo,
                                     setPrazo(novoPrazo);
                                 }}
                                 renderInput={(params) => <TextField {...params} />}
+                                disabled={modoVisualizacao}
                             />
                         </LocalizationProvider>
                     </Grid>
-                    <Grid item sm={6}>
-                        <Button variant="contained" color="error" onClick={handleCancelar} fullWidth>Cancelar</Button>
+                    <Grid item sm={modoVisualizacao ? 12 : 6}>
+                        <Button variant="contained" color="error" onClick={handleCancelar} fullWidth>Fechar</Button>
                     </Grid>
-                    <Grid item sm={6}>
+                    {!modoVisualizacao && (<Grid item sm={6}>
                         <Button variant="contained" color="success" onClick={handleConfirmar} fullWidth>Salvar</Button>
-                    </Grid>
+                    </Grid>)}
                 </Grid>
                 
             </DialogContent>

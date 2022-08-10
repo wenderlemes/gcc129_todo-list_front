@@ -7,8 +7,21 @@
     background-color: #556655;
 }
 
+.Titulo-container {
+    display: grid;
+    grid-template-columns: 1fr 0.2fr;
+    width: 55vw;
+    border: 1px solid #FFFFFF;
+    border-radius: 5px;
+    background-color: #556655;
+}
+
 .Header {
     background-color: #445544;
+}
+
+.Adicionar {
+    background-color: #008a00;
 }
 
 .Campo {
