@@ -1,24 +1,22 @@
-//---------------------------
-
 var express = require('express');
 var bodyParser = require('body-parser');
 var cors = require('cors')
 var app = express();
 app.use(bodyParser.json());
-//app.use(bodyParser.urlencoded({
-//	extended: true
-//}));
+
 app.use(cors())
+	// Lista de carros
+
+var tarefas = [
+	{ identificacao: '1', descricao: 'Jetta', prazo: '1995-08-09T01:01:01.123Z', completa: true },
+	{ identificacao: '2', descricao: 'Outra', prazo: '1995-08-09T02:02:02.456Z', completa: false },
+];
+var urlencodedParser = bodyParser.urlencoded({ extended: false }) ;
 
 app.listen(3000);
 
 //---------------------------
 
-// Lista de carros
-var tarefas = [
-  { identificacao: '1', descricao: 'Jetta', prazo: '1995-08-09T01:01:01.123Z', completa: true },
-  { identificacao: '2', descricao: 'Outra', prazo: '1995-08-09T02:02:02.456Z', completa: false },
-];
 
 // exemplo de um carro no formato JSON
 //{ "fabricante": "Ford", "modelo": "Ka", "ano": 2010, "automatico": false, "preco": 11000}
@@ -35,42 +33,41 @@ app.get('/tarefas', function (req, res) {
 
 app.get('/tarefas/:id', function(req, res) {
 	var id = req.params.id;
-	if (id >= 0 && id < carros.length)
-		res.json(carros[id]);
+	if (id >= 0 && id < tarefas.length)
+	res.json(tarefas[id]);
 	else
-		res.status(500).json({status: 'erro', message: "id invalido"});
+	res.status(500).json({status: 'erro', message: "id invalido"});
 })
 
-app.post('/carros', function (req, res) {
-	var carro = req.body;
-	carros[carros.length] = carro;
-	res.json(carros[carros.length-1]);  
+app.post('/tarefas/add', urlencodedParser,function (req, res) {
+	var tarefa = {
+		identificacao: req.body.identificacao,
+		descricao: req.body.descricao,
+		prazo: req.body.prazo,
+		completa: req.body.completa
+	};
+	tarefas.push(tarefa);
+	console.log(tarefa);
+	res.json(tarefas);  
 })
 
-app.delete('/carros/:id', function(req, res) {
+app.put('/tarefas/update/:id', urlencodedParser,function (req, res) {
 	var id = req.params.id;
-	if (id >= 0 && id < carros.length) {
-		carros.splice(id, 1)
-		res.json(carros);
-	}
-	else
-		res.status(500).json({status: 'erro', message: "id invalido"});
+	var tarefa = {
+		identificacao: req.body.identificacao,
+		descricao: req.body.descricao,
+		prazo: req.body.prazo,
+		completa: req.body.completa
+	};
+	tarefas[id]= tarefa
+	console.log(tarefa);
+	res.json(tarefas);  
 })
 
-app.get('/carros/count', function (req, res) {
-	res.end(carros.length.toString());
-})
-
-app.get('/carros/menorpreco', function (req, res) {
-	var menorID = 0;
-	var menorPreco = carros[0].preco;
-	for (i = 0; i < carros.length; i++) { 
-    	if (carros[i].preco < menorPreco) {
-    		menorID = i;
-    		menorPreco = carros[i].preco;
-    	}
-	}
-	res.json(carros[menorID]);
+app.delete('/tarefas/delete/:id', function (req, res) {
+	var id = req.body.id;
+	tarefas.splice(id,1);
+	res.json(tarefas);
 })
 
 
