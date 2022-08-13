@@ -1,8 +1,9 @@
 import axios from 'axios'
+import { BACKEND_BASE_URL } from '../app-config';
 import TarefaDto from '../dto/TarefaDto';
 
 export async function getTarefas () {
-  const resultado = axios.get(`http://localhost:4000/tarefas/`)
+  const resultado = axios.get(`${BACKEND_BASE_URL}/tarefas/`)
   .then((res: any) => {
     return res.data;
   })
@@ -11,7 +12,7 @@ export async function getTarefas () {
 }
 
 export async function getTarefa (id: string) {
-  const resultado = axios.get(`http://localhost:4000/tarefas/${id}`)
+  const resultado = axios.get(`${BACKEND_BASE_URL}/tarefas/${id}`)
   .then((res: any) => {
     return res.data;
   })
@@ -20,7 +21,7 @@ export async function getTarefa (id: string) {
 }
 
 export async function postTarefa (tarefa: TarefaDto) {
-  const resultado = axios.post(`http://localhost:4000/tarefas/`, tarefa)
+  const resultado = axios.post(`${BACKEND_BASE_URL}/tarefas/`, tarefa)
   .then((res: any) => {
     return res.data;
   })
@@ -29,14 +30,14 @@ export async function postTarefa (tarefa: TarefaDto) {
 }
 
 export async function deleteTarefa (id: string)  {
-  axios.delete(`http://localhost:4000/tarefas/${id}`)
+  axios.delete(`${BACKEND_BASE_URL}/tarefas/${id}`)
   .then(() => {
     return;
   })
 }
 
 export async function updateTarefa (idTarefa: number, tarefa: TarefaDto) {
-  axios.put(`http://localhost:4000/tarefas/${idTarefa}`, tarefa)
+  axios.put(`${BACKEND_BASE_URL}/tarefas/${idTarefa}`, tarefa)
   .then((res: any) => {
     return res.data;
   })
@@ -45,7 +46,7 @@ export async function updateTarefa (idTarefa: number, tarefa: TarefaDto) {
 }
 
 export async function updateStatusTarefa (idTarefa: number) {
-  axios.put(`http://localhost:4000/tarefas/${idTarefa}/alterarStatusCompleta`)
+  axios.put(`${BACKEND_BASE_URL}/tarefas/${idTarefa}/alterarStatusCompleta`)
   .then((res: any) => {
     return res.data;
   })
