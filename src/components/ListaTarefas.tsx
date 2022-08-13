@@ -5,6 +5,7 @@ import Tarefa from './Tarefa';
 import { getTarefasService, addTarefaService, deleteTarefaService, updateTarefaService, updateStatusTarefaService, getTarefaIndividualService } from '../service/TarefaService';
 import ModalCadastro from './ModalCadastro';
 import { Plus } from 'react-feather';
+import { Button, Tooltip } from '@mui/material';
 
 const ListaTarefas = () => {
     const [lista, setLista] = useState<TarefaModel[]>([]);
@@ -118,7 +119,12 @@ const ListaTarefas = () => {
             <div className="Titulo-container Header">
                 <div className="Campo">Cadastro de Tarefas</div>
                 <div className="Campo Adicionar">
-                    <Plus cursor="pointer" size={50}  onClick={() => setModalCadastroAberto(true)}/>
+                    <Tooltip title="Adicionar tarefa">
+                        <Button 
+                            style={{ width:'100%', height: '100%', color: 'white' }} 
+                            onClick={() => setModalCadastroAberto(true)}><Plus size={30}/>
+                        </Button>
+                    </Tooltip>
                 </div>
             </div>
             <div className="Tarefa-container Header">
