@@ -82,4 +82,18 @@ app.put('/tarefas/:id', function(req,res){
   });
 });
 
+app.put('/tarefas/:id/alterarStatusCompleta', function(req,res){
+  console.log(req.body);
+  db.serialize(()=>{
+    db.run('UPDATE TAREFAS SET completa = NOT(completa)  WHERE identificacao = ?',[req.params.id],function(err){
+      if(err){
+        res.send("Error encountered while updating");
+        return console.error(err.message);
+      }
+      res.send("Entry updated successfully");
+      console.log("Entry updated successfully");
+    });
+  });
+});
+
 app.listen(4000);

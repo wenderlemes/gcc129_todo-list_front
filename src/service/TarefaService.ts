@@ -1,6 +1,6 @@
 import TarefaModel from '../model/TarefaModel';
 import TarefaDto from '../dto/TarefaDto';
-import { getTarefas, postTarefa, deleteTarefa, updateTarefa } from '../repository/TarefasRepository'
+import { getTarefas, postTarefa, deleteTarefa, updateTarefa, updateStatusTarefa, getTarefa } from '../repository/TarefasRepository'
 
 export async function getTarefasService () {
     const resultado = getTarefas()
@@ -21,7 +21,23 @@ export async function getTarefasService () {
     return resultado;
 }
 
-export async function postTarefaService (tarefa: TarefaModel) {
+export async function getTarefaIndividualService (idTarefa: string) {
+    const resultado = getTarefa(idTarefa)
+    .then((resultado) => {
+        const tarefaModel: TarefaModel = {
+            identificacao: resultado.identificacao,
+            descricao: resultado.descricao,
+            prazo: new Date(resultado.prazo),
+            completa: !!resultado.completa,
+        };
+
+        return tarefaModel; })
+    .catch(() => { return null });
+
+    return resultado;
+}
+
+export async function addTarefaService (tarefa: TarefaModel) {
     const tarefaDto = {
         identificacao: '',
         descricao: tarefa.descricao,
@@ -53,6 +69,14 @@ export async function updateTarefaService (idTarefa: number, tarefa: TarefaModel
     }
 
     const resultado = updateTarefa(idTarefa, tarefaDto)
+    .then(() => { return true; })
+    .catch(() => { return false });
+
+    return resultado;
+}
+
+export async function updateStatusTarefaService (idTarefa: number) {
+    const resultado = updateStatusTarefa(idTarefa)
     .then(() => { return true; })
     .catch(() => { return false });
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import TarefaModel from '../model/TarefaModel';
 import './Styles.css';
 import Tarefa from './Tarefa';
-import { getTarefasService, postTarefaService, deleteTarefaService, updateTarefaService } from '../service/TarefaService';
+import { getTarefasService, addTarefaService, deleteTarefaService, updateTarefaService, updateStatusTarefaService, getTarefaIndividualService } from '../service/TarefaService';
 import ModalCadastro from './ModalCadastro';
 import { Plus } from 'react-feather';
 
@@ -39,7 +39,7 @@ const ListaTarefas = () => {
             completa: false
         }
 
-        const idResultante = await postTarefaService(novaTarefa);
+        const idResultante = await addTarefaService(novaTarefa);
         
         if (idResultante) {
             setLista([...lista, { ...novaTarefa, identificacao: idResultante }]);
@@ -49,12 +49,12 @@ const ListaTarefas = () => {
 
     }
 
-    const handleExclusao = async (idTarefa: number) => {
-        const conseguiuDeletar = await deleteTarefaService(idTarefa.toString());
+    const handleExclusao = async (idTarefa: string) => {
+        const conseguiuDeletar = await deleteTarefaService(idTarefa);
 
         if (conseguiuDeletar) {
             const novaLista = [...lista];
-            novaLista.splice(novaLista.findIndex((tarefa) => {return +tarefa.identificacao === idTarefa}), 1)
+            novaLista.splice(novaLista.findIndex((tarefa) => {return tarefa.identificacao === idTarefa}), 1)
             
             setLista(novaLista);
         }
@@ -85,6 +85,34 @@ const ListaTarefas = () => {
         }
     }
 
+    const handleTrocarStatusCompleta = async (idTarefa: string) => {
+        const conseguiuTrocar = await updateStatusTarefaService(+idTarefa);
+
+        if (conseguiuTrocar) {
+            const listaAtualizada = lista.map((tarefa) => {
+                if (tarefa.identificacao === idTarefa) {
+                    return {...tarefa, completa: !tarefa.completa}
+                } else {
+                    return tarefa;
+                }
+            });
+            
+            setLista(listaAtualizada);
+            setModalEdicaoAberto(false);
+        }
+    }
+
+    const obterDetalhesTarefa = async (idTarefa: string) => {
+        const detalhes = await getTarefaIndividualService(idTarefa);
+
+        if (detalhes) {
+            setTarefaSelecionada(detalhes.identificacao);
+            setDescricao(detalhes.descricao);
+            setPrazo(detalhes.prazo);
+            setCompleta(detalhes.completa);
+        }
+    }
+
     return (
         <div>
             <div className="Titulo-container Header">
@@ -105,10 +133,7 @@ const ListaTarefas = () => {
                         tarefa={tarefa}
                         acaoDetalhes={() => {
                             setModalVisualizacaoAberto(true);
-                            setTarefaSelecionada(tarefa.identificacao);
-                            setDescricao(tarefa.descricao);
-                            setPrazo(tarefa.prazo);
-                            setCompleta(tarefa.completa);
+                            obterDetalhesTarefa(tarefa.identificacao);
                         }} 
                         acaoEditar={() => {
                             setModalEdicaoAberto(true);
@@ -117,8 +142,8 @@ const ListaTarefas = () => {
                             setPrazo(tarefa.prazo);
                             setCompleta(tarefa.completa);
                         }} 
-                        acaoCompletar={() => alert("Completar tarefa")} 
-                        acaoExcluir={() => handleExclusao(+tarefa.identificacao)}
+                        acaoCompletar={() => handleTrocarStatusCompleta(tarefa.identificacao)} 
+                        acaoExcluir={() => handleExclusao(tarefa.identificacao)}
                         key={tarefa.identificacao}
                     />
                 ) : 
