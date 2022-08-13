@@ -9,19 +9,21 @@ var server = http.createServer(app);
 //var urlencodedParser = bodyParser.urlencoded({ extended: false });
 var db = new sqlite3.Database('./Tarefas.db');
 db.run('CREATE TABLE IF NOT EXISTS TAREFAS (identificacao INTEGER PRIMARY KEY AUTOINCREMENT, descricao TEXT, prazo DATE, completa BOOLEAN)');
-
+const cors = require('cors');
+app.use(cors({
+    origin: '*'
+}));
 
 app.post('/tarefas', function(req,res){
-  var newId = 0;
   db.serialize(()=>{
     db.run('INSERT INTO TAREFAS(descricao, prazo,completa) VALUES(?,?,?)',  [req.body.descricao,req.body.prazo,req.body.completa],function(err) {
       if (err) {
         return console.log(err.message);
       }
       console.log("New task has been added");
-      res.send("New task has been added into the database");
+      res.send(this.lastID.toString());
     });
-  })
+  });
   ;}
 );
 
@@ -29,7 +31,6 @@ app.get('/tarefas', function(req,res){
   db.serialize(()=>{
     db.all('SELECT * FROM TAREFAS ', function(err,rows){     
       if(err){
-        //return res.send(err.message);
         return console.error(err.message);
       }
       console.log(rows.length);
@@ -69,7 +70,6 @@ app.get('/tarefas/:id', function(req,res){
 
 app.put('/tarefas/:id', function(req,res){
   console.log(req.body);
-  var newId = 0;
   db.serialize(()=>{
     db.run('UPDATE TAREFAS SET descricao = ?, prazo = ?, completa = ?  WHERE identificacao = ?',[req.body.descricao,req.body.prazo,req.body.completa,req.params.id],function(err){
       if(err){

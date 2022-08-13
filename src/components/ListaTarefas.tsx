@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import TarefaModel from '../model/TarefaModel';
 import './Styles.css';
 import Tarefa from './Tarefa';
-import { getTarefasService } from '../service/TarefaService';
+import { getTarefasService, postTarefaService, deleteTarefaService, updateTarefaService } from '../service/TarefaService';
 import ModalCadastro from './ModalCadastro';
 import { Plus } from 'react-feather';
 
@@ -13,14 +13,15 @@ const ListaTarefas = () => {
     const [modalVisualizacaoAberto, setModalVisualizacaoAberto] = useState(false);
 	const [prazo, setPrazo] = useState<Date | null>(null);
 	const [descricao, setDescricao] = useState<string>('');
+	const [completa, setCompleta] = useState<boolean>(false);
     const [tarefaSelecionada, setTarefaSelecionada] = useState<string>('');
 
-    useEffect(() => {
-        async function obterTarefas() {
-            const resultado = await getTarefasService();
-            setLista(resultado);
-        };
+    async function obterTarefas() {
+        const resultado = await getTarefasService();
+        setLista(resultado);
+    };
 
+    useEffect(() => {
         obterTarefas();
     }, []);
 
@@ -30,14 +31,7 @@ const ListaTarefas = () => {
         setTarefaSelecionada('');
     };
 
-    const handleExclusao = (indiceTarefa: number) => {
-        const novaLista = [...lista];
-        novaLista.splice(indiceTarefa, 1)
-        
-        setLista(novaLista);
-    }
-
-    const handleAdicao = () => {
+    const handleAdicao = async () => {
         const novaTarefa: TarefaModel = {
             identificacao: '',
             descricao: descricao,
@@ -45,9 +39,50 @@ const ListaTarefas = () => {
             completa: false
         }
 
-        setLista([...lista, novaTarefa]);
-        limparCampos();
-        setModalCadastroAberto(false);
+        const idResultante = await postTarefaService(novaTarefa);
+        
+        if (idResultante) {
+            setLista([...lista, { ...novaTarefa, identificacao: idResultante }]);
+            limparCampos();
+            setModalCadastroAberto(false);
+        }
+
+    }
+
+    const handleExclusao = async (idTarefa: number) => {
+        const conseguiuDeletar = await deleteTarefaService(idTarefa.toString());
+
+        if (conseguiuDeletar) {
+            const novaLista = [...lista];
+            novaLista.splice(novaLista.findIndex((tarefa) => {return +tarefa.identificacao === idTarefa}), 1)
+            
+            setLista(novaLista);
+        }
+    }
+
+    const handleEdicao = async (idTarefa: string) => {
+        const tarefaAtual: TarefaModel = {
+            identificacao: idTarefa,
+            descricao: descricao,
+            prazo: prazo || new Date(),
+            completa: completa
+        }
+
+        const conseguiuEditar = await updateTarefaService(+idTarefa, tarefaAtual);
+
+        if (conseguiuEditar) {
+            const listaAtualizada = lista.map((tarefa) => {
+                if (tarefa.identificacao === idTarefa) {
+                    return {...tarefa, descricao: descricao, prazo: prazo || new Date(), completa: completa}
+                } else {
+                    return tarefa;
+                }
+            });
+            
+            setLista(listaAtualizada);
+            limparCampos();
+            setModalEdicaoAberto(false);
+        }
     }
 
     return (
@@ -65,7 +100,7 @@ const ListaTarefas = () => {
                 <div className="Campo">Opções</div>
             </div>
             {lista.length ? 
-                lista.map((tarefa, indiceTarefa) => 
+                lista.map((tarefa) => 
                     <Tarefa 
                         tarefa={tarefa}
                         acaoDetalhes={() => {
@@ -73,15 +108,17 @@ const ListaTarefas = () => {
                             setTarefaSelecionada(tarefa.identificacao);
                             setDescricao(tarefa.descricao);
                             setPrazo(tarefa.prazo);
+                            setCompleta(tarefa.completa);
                         }} 
                         acaoEditar={() => {
                             setModalEdicaoAberto(true);
                             setTarefaSelecionada(tarefa.identificacao);
                             setDescricao(tarefa.descricao);
                             setPrazo(tarefa.prazo);
+                            setCompleta(tarefa.completa);
                         }} 
                         acaoCompletar={() => alert("Completar tarefa")} 
-                        acaoExcluir={() => handleExclusao(indiceTarefa)}
+                        acaoExcluir={() => handleExclusao(+tarefa.identificacao)}
                         key={tarefa.identificacao}
                     />
                 ) : 
@@ -89,7 +126,6 @@ const ListaTarefas = () => {
                     <div className="Campo" style={{gridColumn: '1 / -1'}}>Nenhuma tarefa cadastrada</div>
                 </div>
             }
-            
             <ModalCadastro 
                 aberto={modalCadastroAberto} 
                 handleCancelar={() => { 
@@ -109,7 +145,7 @@ const ListaTarefas = () => {
                     setModalEdicaoAberto(false);
                     limparCampos();
                 }} 
-                handleConfirmar={() => console.log()}
+                handleConfirmar={() => handleEdicao(tarefaSelecionada)}
                 titulo={`Edição da tarefa ${tarefaSelecionada}`}
                 prazo={prazo}
                 setPrazo={setPrazo}
@@ -122,7 +158,6 @@ const ListaTarefas = () => {
                     setModalVisualizacaoAberto(false);
                     limparCampos();
                 }} 
-                handleConfirmar={() => console.log()}
                 titulo={`Visualização da tarefa ${tarefaSelecionada}`}
                 prazo={prazo}
                 setPrazo={setPrazo}

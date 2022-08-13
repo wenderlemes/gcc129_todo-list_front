@@ -9,7 +9,7 @@ import { DateTimePicker } from '@mui/x-date-pickers';
 interface IModalCadastroProps {
     aberto: boolean;
     handleCancelar: () => void;
-    handleConfirmar: () => void;
+    handleConfirmar?: () => void;
     titulo: string;
     prazo: Date | null;
     setPrazo: (prazo: Date | null) => void;
